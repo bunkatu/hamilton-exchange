@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/exchange_nav_graph"
+    app:startDestination="@id/selectCurrencyFragment">
+
+    <fragment
+        android:id="@+id/selectCurrencyFragment"
+        android:name="com.hamiltonch.hamiltonexchange.view.SelectCurrencyFragment"
+        android:label="fragment_select_currency"
+        tools:layout="@layout/fragment_select_currency" >
+        <action
+            android:id="@+id/action_selectCurrencyFragment_to_exchangeFragment"
+            app:destination="@id/exchangeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/exchangeFragment"
+        android:name="com.hamiltonch.hamiltonexchange.view.ExchangeFragment"
+        android:label="fragment_exchange"
+        tools:layout="@layout/fragment_exchange" >
+        <action
+            android:id="@+id/action_exchangeFragment_to_resultFragment"
+            app:destination="@id/resultFragment"
+
+            app:popUpTo="@+id/selectCurrencyFragment"/>
+
+        <argument
+            android:name="fromCurrency"
+            app:argType="string"
+            android:defaultValue=""/>
+        <argument
+            android:name="toCurrency"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="amount"
+            app:argType="string"
+            android:defaultValue="0.0" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.hamiltonch.hamiltonexchange.view.ResultFragment"
+        android:label="fragment_result"
+        tools:layout="@layout/fragment_result" />
+</navigation>

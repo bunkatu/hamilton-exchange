@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="currency"
+            type="String" />
+        <variable
+            name="clickListener"
+            type="com.hamiltonch.hamiltonexchange.view.adapter.CurrencyClickListener" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:onClick="@{(view) -> clickListener.onCurrencyClicked(view, currency)}"
+        android:gravity="center"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/currencyTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="@{currency}"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

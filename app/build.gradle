@@ -15,7 +15,11 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
 //        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunner "com.hamiltonch.hamiltonexchange.HiltTestRunner"
     }
@@ -32,6 +36,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    dataBinding{
+        enabled = true
     }
 }
 
