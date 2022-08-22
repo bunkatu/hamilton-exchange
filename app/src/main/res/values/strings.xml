@@ -10,4 +10,7 @@
     <string name="convert_msg">Are you sure you want to complete the exchange?</string>
     <string name="convert_yes">Yes</string>
     <string name="convert_no">No</string>
+    <string name="finish_button">Done</string>
+    <string name="success_title">Exchange is successful!</string>
+    <string name="success_msg">You will be redirected to home</string>
 </resources>
