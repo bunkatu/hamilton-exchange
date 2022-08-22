@@ -16,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.hamiltonch.hamiltonexchange.R
 import com.hamiltonch.hamiltonexchange.databinding.FragmentSelectCurrencyBinding
 import com.hamiltonch.hamiltonexchange.db.ExchangeRate
+import com.hamiltonch.hamiltonexchange.model.Conversion
 import com.hamiltonch.hamiltonexchange.util.CustomSharedPrefs
 import com.hamiltonch.hamiltonexchange.util.Status
 import com.hamiltonch.hamiltonexchange.util.Util
@@ -133,7 +134,9 @@ class SelectCurrencyFragment @Inject constructor(val currencyRecyclerAdapter: Cu
         viewModel.calculateMessage.observe(viewLifecycleOwner, Observer{
             when(it.status){
                 Status.SUCCESS -> {
-                    findNavController().navigate(SelectCurrencyFragmentDirections.actionSelectCurrencyFragmentToExchangeFragment(it.data?.fromCurrency?:"",it.data?.toCurrency?:"", binding.amountInput.text.toString()))
+                    findNavController().navigate(SelectCurrencyFragmentDirections.actionSelectCurrencyFragmentToExchangeFragment(
+                        Conversion(it.data?.fromCurrency?:"",it.data?.toCurrency?:"", it.data?.rate?:1.0,  binding.amountInput.text.toString().toDouble()))
+                    )
                     binding.amountInput.setText("")
                     viewModel.resetCalculateMsg()
                 }

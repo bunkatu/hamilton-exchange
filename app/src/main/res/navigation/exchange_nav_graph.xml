@@ -26,17 +26,8 @@
             app:popUpTo="@+id/selectCurrencyFragment"/>
 
         <argument
-            android:name="fromCurrency"
-            app:argType="string"
-            android:defaultValue=""/>
-        <argument
-            android:name="toCurrency"
-            app:argType="string"
-            android:defaultValue="" />
-        <argument
-            android:name="amount"
-            app:argType="string"
-            android:defaultValue="0.0" />
+            android:name="conversion"
+            app:argType="com.hamiltonch.hamiltonexchange.model.Conversion" />
     </fragment>
     <fragment
         android:id="@+id/resultFragment"

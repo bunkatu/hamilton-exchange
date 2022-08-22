@@ -25,7 +25,7 @@ class SelectCurrencyViewModel @Inject constructor(private val repository : Curre
     }
 
     private var customPreferences : CustomSharedPrefs? = null
-    private val REFRESH_INTERVAL = 0.1 * 60 * 1000 * 1000 * 1000L  // 10 minutes in nanoTime
+    private val REFRESH_INTERVAL = 10 * 60 * 1000 * 1000 * 1000L  // 10 minutes in nanoTime
     val currencyLoading = MutableLiveData<Boolean>()
 
     fun getData(from : String, to : String, forceApi: Boolean){
