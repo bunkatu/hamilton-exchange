@@ -1,0 +1,52 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "af84b75ed3ce081ef41095e4f2451c38",
+    "entities": [
+      {
+        "tableName": "currencies",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`fromCurrency` TEXT NOT NULL, `toCurrency` TEXT NOT NULL, `rate` REAL NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)",
+        "fields": [
+          {
+            "fieldPath": "fromCurrency",
+            "columnName": "fromCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "toCurrency",
+            "columnName": "toCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rate",
+            "columnName": "rate",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'af84b75ed3ce081ef41095e4f2451c38')"
+    ]
+  }
+}
