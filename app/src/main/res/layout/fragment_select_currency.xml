@@ -40,7 +40,7 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
+                    <LinearLayout
                         android:id="@+id/fromCurrencyContainer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -58,6 +58,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="24sp"
                             android:textColor="@color/black"
+                            android:layout_weight="1"
                             android:textStyle="bold"
                             android:text="@{exchangeRate.fromCurrency}"/>
 
@@ -66,7 +67,7 @@
                             android:layout_height="24dp"
                             android:src="@drawable/ic_arrow_drop_down"/>
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    </LinearLayout>
 
 
                     <ImageView
@@ -119,6 +120,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="24dp"
                     android:textSize="48sp"
+                    android:textAlignment="center"
+                    android:textColorHint="@color/light_grey"
+                    android:textColor="@color/black"
                     android:hint="150.00"
                     android:imeOptions="actionDone"
                     android:gravity="center"
@@ -139,14 +143,14 @@
                 android:id="@+id/selectCurrencyloader"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:background="#D9FFFFFF"
-                android:visibility="@{isLoading ? View.VISIBLE : View.GONE}"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="@{isLoading ? View.VISIBLE : View.GONE}">
 
                 <ProgressBar
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
         </RelativeLayout>
