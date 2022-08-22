@@ -54,8 +54,8 @@ class CurrencyDaoTest {
 
         currencyDao.insertAll(usdEur,usdGbp)
 
-        val savedEur = currencyDao.observeExchangeRate("USD","EUR").getOrAwaitValue()
-        val savedGbp = currencyDao.observeExchangeRate("USD","EUR").getOrAwaitValue()
+        val savedEur = currencyDao.observeExchangeRate("USD","EUR")
+        val savedGbp = currencyDao.observeExchangeRate("USD","EUR")
 
         assertThat(savedEur).isNotNull()
         assertThat(savedGbp).isNotNull()
@@ -71,8 +71,8 @@ class CurrencyDaoTest {
 
         currencyDao.deleteExchangeRatesByFromCurrency("USD")
 
-        val savedEur = currencyDao.observeExchangeRate("USD","EUR").getOrAwaitValue()
-        val savedGbp = currencyDao.observeExchangeRate("USD","EUR").getOrAwaitValue()
+        val savedEur = currencyDao.observeExchangeRate("USD","EUR")
+        val savedGbp = currencyDao.observeExchangeRate("USD","EUR")
 
         assertThat(savedEur).isNull()
         assertThat(savedGbp).isNull()
