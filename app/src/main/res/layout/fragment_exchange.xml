@@ -33,7 +33,7 @@ xmlns:tools="http://schemas.android.com/tools">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="26sp"
-            android:textColor="#2E2E2E"
+            android:textColor="@color/grey"
             android:layout_marginTop="12dp"
             android:text="@string/precedes"/>
         <TextView
