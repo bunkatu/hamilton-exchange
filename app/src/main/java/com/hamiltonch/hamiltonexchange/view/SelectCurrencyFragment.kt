@@ -13,13 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.hamiltonch.hamiltonexchange.BuildConfig
 import com.hamiltonch.hamiltonexchange.R
 import com.hamiltonch.hamiltonexchange.databinding.FragmentSelectCurrencyBinding
-import com.hamiltonch.hamiltonexchange.db.ExchangeRate
 import com.hamiltonch.hamiltonexchange.model.Conversion
 import com.hamiltonch.hamiltonexchange.util.CustomSharedPrefs
 import com.hamiltonch.hamiltonexchange.util.Status
-import com.hamiltonch.hamiltonexchange.util.Util
 import com.hamiltonch.hamiltonexchange.view.adapter.CurrencyRecyclerAdapter
 import com.hamiltonch.hamiltonexchange.viewmodel.SelectCurrencyViewModel
 import javax.inject.Inject
@@ -30,7 +29,7 @@ class SelectCurrencyFragment @Inject constructor(val currencyRecyclerAdapter: Cu
     private lateinit var binding : FragmentSelectCurrencyBinding
     lateinit var viewModel : SelectCurrencyViewModel
 
-    private var currencies = Util.SUPPORTED_CURRENCIES
+    private var currencies = BuildConfig.SUPPORTED_CURRENCIES.toList()
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
@@ -98,7 +97,9 @@ class SelectCurrencyFragment @Inject constructor(val currencyRecyclerAdapter: Cu
         viewModel = ViewModelProvider(requireActivity()).get(SelectCurrencyViewModel::class.java)
         viewModel.setPreferences(CustomSharedPrefs(requireContext().applicationContext))
 
-        viewModel.getData(currencies[0], currencies[1],false)
+        if (!viewModel.currenciesSet){
+            viewModel.getData(currencies[0], currencies[1],false)
+        }
 
         binding.currenciesRecycler.adapter = currencyRecyclerAdapter
         binding.currenciesRecycler.layoutManager = LinearLayoutManager(context)
@@ -137,7 +138,7 @@ class SelectCurrencyFragment @Inject constructor(val currencyRecyclerAdapter: Cu
                     findNavController().navigate(SelectCurrencyFragmentDirections.actionSelectCurrencyFragmentToExchangeFragment(
                         Conversion(it.data?.fromCurrency?:"",it.data?.toCurrency?:"", it.data?.rate?:1.0,  binding.amountInput.text.toString().toDouble()))
                     )
-                    binding.amountInput.setText("")
+//                    binding.amountInput.setText("")
                     viewModel.resetCalculateMsg()
                 }
                 Status.ERROR -> {

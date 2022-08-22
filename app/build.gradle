@@ -5,6 +5,11 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }
+Properties app_properties = new Properties()
+File appPropertiesFile = project.file('app.properties')
+if (appPropertiesFile.exists()) {
+    app_properties.load(appPropertiesFile.newDataInputStream())
+}
 
 android {
     compileSdk 32
@@ -28,6 +33,18 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "API_URL", app_properties.api_url
+            buildConfigField "String", "API_KEY", app_properties.exchangerate_api_key
+            buildConfigField "Integer", "REFRESH_TIME_MINUTES", app_properties.refresh_time_in_minutes
+            buildConfigField "Integer", "APPROVAL_DURATION_SECONDS", app_properties.approval_duration_in_seconds
+            buildConfigField "String[]", "SUPPORTED_CURRENCIES", app_properties.supported_currencies
+        }
+        debug {
+            buildConfigField "String", "API_URL", app_properties.api_url
+            buildConfigField "String", "API_KEY", app_properties.exchangerate_api_key
+            buildConfigField "Integer", "REFRESH_TIME_MINUTES", app_properties.refresh_time_in_minutes
+            buildConfigField "Integer", "APPROVAL_DURATION_SECONDS", app_properties.approval_duration_in_seconds
+            buildConfigField "String[]", "SUPPORTED_CURRENCIES", app_properties.supported_currencies
         }
     }
     compileOptions {

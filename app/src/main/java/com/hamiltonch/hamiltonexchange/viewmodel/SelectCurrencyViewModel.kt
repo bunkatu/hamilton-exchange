@@ -1,6 +1,7 @@
 package com.hamiltonch.hamiltonexchange.viewmodel
 
 import androidx.lifecycle.*
+import com.hamiltonch.hamiltonexchange.BuildConfig
 import com.hamiltonch.hamiltonexchange.db.ExchangeRate
 import com.hamiltonch.hamiltonexchange.repository.CurrencyRepositoryInterface
 import com.hamiltonch.hamiltonexchange.util.CustomSharedPrefs
@@ -15,6 +16,7 @@ class SelectCurrencyViewModel @Inject constructor(private val repository : Curre
 
 
     val exchangeRate = MutableLiveData<ExchangeRate>()
+    var currenciesSet = false
 
     private var calculateMsg = MutableLiveData<Resource<ExchangeRate>>()
     val calculateMessage : LiveData<Resource<ExchangeRate>>
@@ -25,7 +27,7 @@ class SelectCurrencyViewModel @Inject constructor(private val repository : Curre
     }
 
     private var customPreferences : CustomSharedPrefs? = null
-    private val REFRESH_INTERVAL = 10 * 60 * 1000 * 1000 * 1000L  // 10 minutes in nanoTime
+    private val REFRESH_INTERVAL = BuildConfig.REFRESH_TIME_MINUTES * 60 * 1000 * 1000 * 1000L  // 10 minutes in nanoTime
     val currencyLoading = MutableLiveData<Boolean>()
 
     fun getData(from : String, to : String, forceApi: Boolean){
@@ -61,6 +63,7 @@ class SelectCurrencyViewModel @Inject constructor(private val repository : Curre
             val rate = repository.getExchangeRate(from, to)
             if (rate != null){
                 exchangeRate.postValue(rate)
+                currenciesSet = true
                 currencyLoading.value = false
             }else{
                 fetchFromApi(from, to)
@@ -86,6 +89,7 @@ class SelectCurrencyViewModel @Inject constructor(private val repository : Curre
                         val rate = repository.getExchangeRate(from, to)
                         if (rate != null){
                             exchangeRate.postValue(rate)
+                            currenciesSet = true
                         }
                     }
 

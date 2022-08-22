@@ -4,6 +4,7 @@ import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.hamiltonch.hamiltonexchange.BuildConfig
 import com.hamiltonch.hamiltonexchange.model.Conversion
 
 class ExchangeViewModel : ViewModel() {
@@ -35,7 +36,7 @@ class ExchangeViewModel : ViewModel() {
         if (countDownTimer != null){
             countDownTimer?.cancel()
         }
-        countDownTimer = object : CountDownTimer(10000, 1000) {
+        countDownTimer = object : CountDownTimer(BuildConfig.APPROVAL_DURATION_SECONDS*1000L, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 var diff = millisUntilFinished
                 val secondsInMilli: Long = 1000

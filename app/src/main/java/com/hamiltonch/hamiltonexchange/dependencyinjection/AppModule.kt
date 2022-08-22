@@ -2,12 +2,12 @@ package com.hamiltonch.hamiltonexchange.dependencyinjection
 
 import android.content.Context
 import androidx.room.Room
+import com.hamiltonch.hamiltonexchange.BuildConfig
 import com.hamiltonch.hamiltonexchange.api.RetrofitAPI
 import com.hamiltonch.hamiltonexchange.db.CurrencyDB
 import com.hamiltonch.hamiltonexchange.db.CurrencyDao
 import com.hamiltonch.hamiltonexchange.repository.CurrencyRepository
 import com.hamiltonch.hamiltonexchange.repository.CurrencyRepositoryInterface
-import com.hamiltonch.hamiltonexchange.util.Util.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,7 +41,7 @@ object AppModule {
     fun injectRetrofitAPI() : RetrofitAPI {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.API_URL)
             .build()
             .create(RetrofitAPI::class.java)
     }
