@@ -15,7 +15,11 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
 //        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunner "com.hamiltonch.hamiltonexchange.HiltTestRunner"
     }
@@ -33,6 +37,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    dataBinding{
+        enabled = true
+    }
 }
 
 dependencies {
@@ -44,6 +51,7 @@ dependencies {
     def roomVersion = '2.4.3'
     def navVersion = '2.5.1'
     def preferencesVersion = '1.2.0'
+    def lottieVersion = '5.2.0'
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.5.0'
@@ -86,7 +94,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime:2.5.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
     implementation "androidx.activity:activity-ktx:1.5.1"
-
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 
     // TestImplementations
     implementation "androidx.test:core:1.4.0"

@@ -11,7 +11,7 @@ interface CurrencyRepositoryInterface {
 
     suspend fun deleteExchangeRates(fromCurrency: String)
 
-    fun getExchangeRate(from: String, to: String) : LiveData<ExchangeRate>
+    suspend fun getExchangeRate(from: String, to: String) : ExchangeRate
 
     suspend fun fetchExchangeRates(from: String) : Resource<CurrencyResponse>
 

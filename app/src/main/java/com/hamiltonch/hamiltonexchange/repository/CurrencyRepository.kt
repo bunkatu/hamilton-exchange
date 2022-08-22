@@ -20,7 +20,7 @@ class CurrencyRepository @Inject constructor(private val currencyDao: CurrencyDa
         currencyDao.deleteExchangeRatesByFromCurrency(fromCurrency)
     }
 
-    override fun getExchangeRate(from: String, to: String): LiveData<ExchangeRate> {
+    override suspend fun getExchangeRate(from: String, to: String): ExchangeRate {
         return currencyDao.observeExchangeRate(from, to)
     }
 

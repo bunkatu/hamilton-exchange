@@ -14,6 +14,6 @@ interface CurrencyDao {
     suspend fun deleteExchangeRatesByFromCurrency(currency: String)
 
     @Query("SELECT * FROM currencies WHERE fromCurrency = :from AND toCurrency = :to")
-    fun observeExchangeRate(from: String,to: String): LiveData<ExchangeRate>
+    suspend fun observeExchangeRate(from: String,to: String): ExchangeRate
 
 }
