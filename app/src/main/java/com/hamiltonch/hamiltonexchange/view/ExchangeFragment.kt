@@ -33,18 +33,22 @@ class ExchangeFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_exchange, container, false)
         binding.listener = View.OnClickListener {
 
-            val builder = AlertDialog.Builder(context)
-            builder.setMessage(R.string.convert_msg)
-                .setCancelable(false)
-                .setPositiveButton(R.string.convert_yes) { dialog, id ->
-                    findNavController().navigate(ExchangeFragmentDirections.actionExchangeFragmentToResultFragment())
-                }
-                .setNegativeButton(R.string.convert_no) { dialog, id ->
-                    // Dismiss the dialog
-                    dialog.dismiss()
-                }
-            val alert = builder.create()
-            alert.show()
+            val conversion = viewModel.conversion.value
+            conversion?.let {
+                val builder = AlertDialog.Builder(context)
+                builder.setMessage(getString(R.string.convert_msg,conversion.calculate(),conversion.toCurrency, conversion.round(conversion.amount),conversion.fromCurrency) )
+                    .setCancelable(false)
+                    .setTitle(R.string.convert_title)
+                    .setPositiveButton(R.string.convert_yes) { dialog, id ->
+                        findNavController().navigate(ExchangeFragmentDirections.actionExchangeFragmentToResultFragment())
+                    }
+                    .setNegativeButton(R.string.convert_no) { dialog, id ->
+                        // Dismiss the dialog
+                        dialog.dismiss()
+                    }
+                val alert = builder.create()
+                alert.show()
+            }
 
         }
 

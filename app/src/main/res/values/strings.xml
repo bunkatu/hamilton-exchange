@@ -7,7 +7,8 @@
     <string name="countdown_text">%1$s sec left</string>
     <string name="currency_text">%1$s %2$s</string>
     <string name="precedes">precedes</string>
-    <string name="convert_msg">Are you sure you want to complete the exchange?</string>
+    <string name="convert_title">Approval Required</string>
+    <string name="convert_msg">You are about to get %1$s %2$s for %3$s %4$s. Do you approve this transaction?</string>
     <string name="convert_yes">Yes</string>
     <string name="convert_no">No</string>
     <string name="finish_button">Done</string>
