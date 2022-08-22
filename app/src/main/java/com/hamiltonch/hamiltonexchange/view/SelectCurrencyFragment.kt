@@ -5,17 +5,35 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.hamiltonch.hamiltonexchange.R
 import com.hamiltonch.hamiltonexchange.databinding.FragmentSelectCurrencyBinding
+import com.hamiltonch.hamiltonexchange.db.ExchangeRate
+import com.hamiltonch.hamiltonexchange.util.CustomSharedPrefs
+import com.hamiltonch.hamiltonexchange.util.Status
+import com.hamiltonch.hamiltonexchange.util.Util
 import com.hamiltonch.hamiltonexchange.view.adapter.CurrencyRecyclerAdapter
+import com.hamiltonch.hamiltonexchange.viewmodel.SelectCurrencyViewModel
 import javax.inject.Inject
 
 class SelectCurrencyFragment @Inject constructor(val currencyRecyclerAdapter: CurrencyRecyclerAdapter)  : Fragment() {
 
 
     private lateinit var binding : FragmentSelectCurrencyBinding
+    lateinit var viewModel : SelectCurrencyViewModel
+
+    private var currencies = Util.SUPPORTED_CURRENCIES
+
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+
+    private var currentSelectionFrom = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,16 +46,114 @@ class SelectCurrencyFragment @Inject constructor(val currencyRecyclerAdapter: Cu
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_currency, container, false)
-        binding.listener = View.OnClickListener {
-            findNavController().navigate(SelectCurrencyFragmentDirections.actionSelectCurrencyFragmentToExchangeFragment("USD","EUR","150"))
+        binding.callback = object : SelectCurrencyCallback{
+            override fun onFromCurrency(view: View) {
+                showCurrencyPicker(true)
+            }
+
+            override fun onToCurrency(view: View) {
+                showCurrencyPicker(false)
+            }
+
+            override fun onCalculate(view: View) {
+                viewModel.calculate(binding.amountInput.text.toString())
+            }
+
+            override fun onChangeBtn(view: View) {
+                viewModel.swap()
+            }
+
         }
+
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // handle onSlide
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+            }
+        })
+
+
 
 
         return binding.root
     }
 
-    fun onButtonClick(){
-
+    private fun showCurrencyPicker(isFrom : Boolean){
+        currentSelectionFrom = isFrom
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(requireActivity()).get(SelectCurrencyViewModel::class.java)
+        viewModel.setPreferences(CustomSharedPrefs(requireContext().applicationContext))
+
+        viewModel.getData(currencies[0], currencies[1],false)
+
+        binding.currenciesRecycler.adapter = currencyRecyclerAdapter
+        binding.currenciesRecycler.layoutManager = LinearLayoutManager(context)
+        currencyRecyclerAdapter.setCurrencyList(currencies)
+
+        currencyRecyclerAdapter.setOnItemClickListener {
+            if (currentSelectionFrom){
+                viewModel.updateFrom(it)
+            }else{
+                viewModel.updateTo(it)
+            }
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        observeLiveData()
+    }
+
+
+    private fun observeLiveData(){
+        viewModel.exchangeRate.observe(viewLifecycleOwner, Observer{currency ->
+            currency?.let {
+                binding.exchangeRate = it
+            }
+        })
+
+        viewModel.currencyLoading.observe(viewLifecycleOwner, Observer{ loading ->
+            loading?.let {
+                binding.isLoading = loading
+            }
+
+        })
+
+        viewModel.calculateMessage.observe(viewLifecycleOwner, Observer{
+            when(it.status){
+                Status.SUCCESS -> {
+                    findNavController().navigate(SelectCurrencyFragmentDirections.actionSelectCurrencyFragmentToExchangeFragment(it.data?.fromCurrency?:"",it.data?.toCurrency?:"", binding.amountInput.text.toString()))
+                    binding.amountInput.setText("")
+                    viewModel.resetCalculateMsg()
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(), it.message ?: "Error!", Toast.LENGTH_SHORT).show()
+                }
+                Status.LOADING -> {
+
+                }
+            }
+        })
+    }
+
+
+    interface SelectCurrencyCallback {
+        fun onFromCurrency(view: View)
+        fun onToCurrency(view: View)
+        fun onCalculate(view: View)
+        fun onChangeBtn(view: View)
+    }
+
 
 }

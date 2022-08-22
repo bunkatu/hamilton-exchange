@@ -16,6 +16,7 @@
         android:orientation="horizontal"
         android:onClick="@{(view) -> clickListener.onCurrencyClicked(view, currency)}"
         android:gravity="center"
+        android:background="?android:selectableItemBackground"
         android:padding="12dp">
 
         <TextView

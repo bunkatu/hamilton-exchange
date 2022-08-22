@@ -25,7 +25,7 @@ xmlns:tools="http://schemas.android.com/tools">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{listener::onClick}"
-            android:text="convert"/>
+            android:text="@string/calculate_btn"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
